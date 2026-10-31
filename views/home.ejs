@@ -1,9 +1,25 @@
-<%- include("partials/header", { title: "Home | Lustre & Light" }) %>
+﻿<%- include("partials/header", { title: "Home | Lustre & Light" }) %>
 
 <section class="hero">
   <h1>Welcome to Lustre & Light</h1>
-<p>Fine jewellery for every chapter of your story.</p>
+  <p>Fine jewellery for every chapter of your story.</p>
   <a href="/shop" class="btn">Shop Now</a>
+</section>
+
+<section class="featured">
+  <h2 class="section-title">Featured Collection</h2>
+  <div class="product-grid">
+    <% featured.forEach(function (p) { %>
+      <a href="/product/<%= p.id %>" class="product-card">
+        <div class="product-img">
+          <img src="/images/products/<%= p.image %>" alt="<%= p.name %>">
+        </div>
+        <h3><%= p.name %></h3>
+        <p class="rating"><span class="stars"><%= stars(p.avg_rating) %></span> <small>(<%= p.review_count %>)</small></p>
+        <p class="price">Rs. <%= p.price.toLocaleString() %></p>
+      </a>
+    <% }); %>
+  </div>
 </section>
 
 <%- include("partials/footer") %>

@@ -1,0 +1,98 @@
+﻿<%- include("partials/header", { title: product.name + " | Lustre & Light" }) %>
+
+<a href="/shop" class="back-link">&larr; Back to shop</a>
+
+<section class="product-detail">
+  <div class="detail-img">
+    <img src="/images/products/<%= product.image %>" alt="<%= product.name %>">
+  </div>
+  <div class="detail-info">
+    <p class="cat-label"><%= product.category_name %></p>
+    <h1><%= product.name %></h1>
+
+    <div class="rating-row">
+      <span class="stars big"><%= stars(product.avg_rating) %></span>
+      <span class="rating-num"><%= product.avg_rating || 0 %> / 5</span>
+      <a href="#reviews" class="rating-link">(<%= product.review_count %> reviews)</a>
+    </div>
+
+    <p class="detail-price">Rs. <%= product.price.toLocaleString() %></p>
+    <p class="detail-desc"><%= product.description %></p>
+
+    <% if (product.stock > 0) { %>
+      <p class="stock in-stock"><%= product.stock %> in stock</p>
+      <form method="POST" action="/cart/add" class="add-form">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <input type="number" name="quantity" value="1" min="1" max="<%= product.stock %>">
+        <button type="submit" class="btn">Add to Cart</button>
+      </form>
+    <% } else { %>
+      <p class="stock out-stock">Out of stock</p>
+    <% } %>
+  </div>
+</section>
+
+<section class="detail-extra">
+  <div>
+    <h2>About this piece</h2>
+    <p><%= product.long_description || product.description %></p>
+  </div>
+  <div>
+    <h2>Details</h2>
+    <ul class="detail-list">
+      <li><span>Material</span> Gold-plated brass</li>
+      <li><span>Finish</span> 18k gold plating</li>
+      <li><span>Care</span> Keep dry, avoid perfume</li>
+      <li><span>Delivery</span> 3-5 working days</li>
+      <li><span>Returns</span> Easy 7-day returns</li>
+      <li><span>Payment</span> Cash on delivery</li>
+    </ul>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <h2 class="section-title">Customer Reviews</h2>
+
+  <div class="review-summary">
+    <div class="big-num"><%= product.avg_rating || 0 %></div>
+    <div>
+      <div class="stars big"><%= stars(product.avg_rating) %></div>
+      <small>Based on <%= product.review_count %> reviews</small>
+    </div>
+  </div>
+
+  <% if (reviews.length === 0) { %>
+    <p class="empty">No reviews yet.</p>
+  <% } else { %>
+    <% reviews.forEach(function (r) { %>
+      <div class="review-card">
+        <div class="review-top">
+          <strong><%= r.user_name %></strong>
+          <span class="stars"><%= stars(r.rating) %></span>
+        </div>
+        <p><%= r.comment %></p>
+        <small><%= r.created_at.slice(0, 10) %></small>
+      </div>
+    <% }); %>
+  <% } %>
+</section>
+
+<% if (related.length) { %>
+  <section class="featured">
+    <h2 class="section-title">You may also like</h2>
+    <div class="product-grid">
+      <% related.forEach(function (p) { %>
+        <a href="/product/<%= p.id %>" class="product-card">
+          <div class="product-img">
+            <img src="/images/products/<%= p.image %>" alt="<%= p.name %>">
+          </div>
+          <h3><%= p.name %></h3>
+          <p class="rating"><span class="stars"><%= stars(p.avg_rating) %></span> <small>(<%= p.review_count %>)</small></p>
+          <p class="price">Rs. <%= p.price.toLocaleString() %></p>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
+
+<%- include("partials/footer") %>
