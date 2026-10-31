@@ -1,0 +1,49 @@
+﻿<%- include("partials/header", { title: "Cart | Lustre & Light" }) %>
+
+<h1 class="page-title">Your Cart</h1>
+
+<% if (items.length === 0) { %>
+  <div class="empty-cart">
+    <p>Your cart is empty.</p>
+    <a href="/shop" class="btn">Continue Shopping</a>
+  </div>
+<% } else { %>
+  <div class="cart-wrap">
+    <div class="cart-items">
+      <% items.forEach(function (it) { %>
+        <div class="cart-row">
+          <div class="cart-thumb">
+            <img src="/images/products/<%= it.product.image %>" alt="<%= it.product.name %>">
+          </div>
+          <div class="cart-info">
+            <a href="/product/<%= it.product.id %>"><h3><%= it.product.name %></h3></a>
+            <p class="price">Rs. <%= it.product.price.toLocaleString() %></p>
+            <form method="POST" action="/cart/update" class="qty-form">
+              <input type="hidden" name="product_id" value="<%= it.product.id %>">
+              <input type="number" name="quantity" value="<%= it.qty %>" min="0" max="<%= it.product.stock %>">
+              <button type="submit" class="mini-btn">Update</button>
+            </form>
+          </div>
+          <div class="cart-side">
+            <p class="subtotal">Rs. <%= it.subtotal.toLocaleString() %></p>
+            <form method="POST" action="/cart/remove">
+              <input type="hidden" name="product_id" value="<%= it.product.id %>">
+              <button type="submit" class="remove-btn">Remove</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <aside class="cart-summary">
+      <h2>Order Summary</h2>
+      <div class="sum-row"><span>Subtotal</span><span>Rs. <%= total.toLocaleString() %></span></div>
+      <div class="sum-row"><span>Delivery</span><span>Free</span></div>
+      <div class="sum-row total"><span>Total</span><span>Rs. <%= total.toLocaleString() %></span></div>
+      <a href="/checkout" class="btn full">Proceed to Checkout</a>
+      <p class="note">Payment: Cash on Delivery</p>
+    </aside>
+  </div>
+<% } %>
+
+<%- include("partials/footer") %>

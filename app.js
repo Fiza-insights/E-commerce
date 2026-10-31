@@ -1,6 +1,7 @@
 ﻿const express = require("express");
 const path = require("path");
 const db = require("./db");
+const session = require("express-session");
 
 const app = express();
 
@@ -8,6 +9,22 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+
+// Session (cart aur login ke liye)
+app.use(session({
+  secret: process.env.SESSION_SECRET || "dev-only-secret-change-me",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }
+}));
+
+// Har page ko cart ki ginti aur logged-in user bata do
+app.use(function (req, res, next) {
+  const cart = req.session.cart || {};
+  res.locals.cartCount = Object.values(cart).reduce(function (a, b) { return a + b; }, 0);
+  res.locals.currentUser = req.session.user || null;
+  next();
+});
 
 // Sitaray: 4 -> ★★★★☆ (har EJS page mein stars() use ho sakta hai)
 app.locals.stars = function (rating) {
@@ -67,6 +84,9 @@ app.get("/product/:id", function (req, res) {
   const related = db.prepare("SELECT p.*, " + RATING_SQL + " FROM products p WHERE p.category_id = ? AND p.id != ? LIMIT 3").all(product.category_id, product.id);
   res.render("product", { product: product, reviews: reviews, related: related });
 });
+
+app.use("/cart", require("./routes/cart"));
+app.use("/", require("./routes/auth"));
 
 app.listen(3000, function () {
   console.log("Server chal raha hai: http://localhost:3000");

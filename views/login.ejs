@@ -1,0 +1,22 @@
+﻿<%- include("partials/header", { title: "Login | Lustre & Light" }) %>
+
+<div class="auth-card">
+  <h1>Welcome Back</h1>
+  <p class="auth-sub">Login to your Lustre & Light account.</p>
+
+  <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+
+  <form method="POST" action="/login">
+    <label>Email</label>
+    <input type="email" name="email" value="<%= form.email || '' %>" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <button type="submit" class="btn full">Login</button>
+  </form>
+
+  <p class="auth-switch">New here? <a href="/register">Create an account</a></p>
+</div>
+
+<%- include("partials/footer") %>

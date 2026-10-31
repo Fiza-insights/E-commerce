@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -15,8 +15,8 @@
       <div class="nav-links">
         <a href="/">Home</a>
         <a href="/shop">Shop</a>
-        <a href="/cart">Cart</a>
-        <a href="/login">Login</a>
+        <a href="/cart">Cart<% if (cartCount > 0) { %> <span class="cart-badge"><%= cartCount %></span><% } %></a>
+        <% if (currentUser) { %><span class="hello">Hi, <%= currentUser.name.split(" ")[0] %></span><form method="POST" action="/logout" class="logout-form"><button type="submit">Logout</button></form><% } else { %><a href="/login">Login</a><% } %>
       </div>
     </nav>
   </header>
