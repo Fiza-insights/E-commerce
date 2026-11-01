@@ -1,0 +1,41 @@
+﻿<%- include("../partials/header", { title: "Products | Admin" }) %>
+
+<div class="admin-wrap">
+  <%- include("../partials/admin-nav", { active: "products" }) %>
+
+  <section class="admin-main">
+    <div class="admin-head">
+      <h1>Products</h1>
+      <a href="/admin/products/new" class="btn">+ Add Product</a>
+    </div>
+
+    <% if (msg) { %><p class="notice"><%= msg %></p><% } %>
+
+    <table class="admin-table">
+      <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Featured</th><th>Actions</th></tr>
+      <% products.forEach(function (p) { %>
+        <tr>
+          <td><div class="thumb"><img src="/images/products/<%= p.image %>" alt=""></div></td>
+          <td><a href="/product/<%= p.id %>"><%= p.name %></a></td>
+          <td><%= p.category_name %></td>
+          <td>Rs. <%= p.price.toLocaleString() %></td>
+          <td>
+            <form method="POST" action="/admin/products/<%= p.id %>/stock" class="inline-form">
+              <input type="number" name="stock" value="<%= p.stock %>" min="0">
+              <button type="submit" class="mini-btn">Save</button>
+            </form>
+          </td>
+          <td><%= p.featured ? "Yes" : "-" %></td>
+          <td class="actions">
+            <a href="/admin/products/<%= p.id %>/edit">Edit</a>
+            <form method="POST" action="/admin/products/<%= p.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this product?')">
+              <button type="submit" class="remove-btn">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </table>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

@@ -1,0 +1,23 @@
+﻿<%- include("partials/header", { title: "Order Confirmed | Lustre & Light" }) %>
+
+<div class="confirm-card">
+  <div class="tick">&#10003;</div>
+  <h1>Thank you for your order!</h1>
+  <p class="auth-sub">Your order <strong>#<%= order.id %></strong> has been placed.</p>
+
+  <div class="confirm-meta">
+    <div><span>Status</span><strong class="badge"><%= order.status %></strong></div>
+    <div><span>Payment</span><strong>Cash on Delivery</strong></div>
+    <div><span>Phone</span><strong><%= order.phone %></strong></div>
+    <div><span>Address</span><strong><%= order.address %></strong></div>
+  </div>
+
+  <% lines.forEach(function (l) { %>
+    <div class="sum-row"><span><%= l.name %> x <%= l.quantity %></span><span>Rs. <%= (l.price * l.quantity).toLocaleString() %></span></div>
+  <% }); %>
+  <div class="sum-row total"><span>Total</span><span>Rs. <%= order.total.toLocaleString() %></span></div>
+
+  <a href="/shop" class="btn full">Continue Shopping</a>
+</div>
+
+<%- include("partials/footer") %>

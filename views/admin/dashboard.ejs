@@ -1,0 +1,49 @@
+﻿<%- include("../partials/header", { title: "Admin | Lustre & Light" }) %>
+
+<div class="admin-wrap">
+  <%- include("../partials/admin-nav", { active: "dashboard" }) %>
+
+  <section class="admin-main">
+    <h1>Dashboard</h1>
+
+    <div class="stat-grid">
+      <div class="stat-card"><span>Products</span><strong><%= stats.products %></strong></div>
+      <div class="stat-card"><span>Orders</span><strong><%= stats.orders %></strong></div>
+      <div class="stat-card"><span>Pending</span><strong><%= stats.pending %></strong></div>
+      <div class="stat-card"><span>Customers</span><strong><%= stats.customers %></strong></div>
+      <div class="stat-card wide"><span>Revenue</span><strong>Rs. <%= stats.revenue.toLocaleString() %></strong></div>
+    </div>
+
+    <h2>Low stock (5 or fewer)</h2>
+    <% if (lowStock.length === 0) { %>
+      <p class="empty">All products are well stocked.</p>
+    <% } else { %>
+      <table class="admin-table">
+        <tr><th>Product</th><th>Stock</th></tr>
+        <% lowStock.forEach(function (p) { %>
+          <tr><td><a href="/product/<%= p.id %>"><%= p.name %></a></td><td class="<%= p.stock === 0 ? 'zero' : 'low' %>"><%= p.stock %></td></tr>
+        <% }); %>
+      </table>
+    <% } %>
+
+    <h2>Recent orders</h2>
+    <% if (recent.length === 0) { %>
+      <p class="empty">No orders yet.</p>
+    <% } else { %>
+      <table class="admin-table">
+        <tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th></tr>
+        <% recent.forEach(function (o) { %>
+          <tr>
+            <td>#<%= o.id %></td>
+            <td><%= o.customer %></td>
+            <td><%= o.created_at.slice(0, 10) %></td>
+            <td><span class="badge"><%= o.status %></span></td>
+            <td>Rs. <%= o.total.toLocaleString() %></td>
+          </tr>
+        <% }); %>
+      </table>
+    <% } %>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

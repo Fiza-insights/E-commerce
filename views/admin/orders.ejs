@@ -1,0 +1,36 @@
+﻿<%- include("../partials/header", { title: "Orders | Admin" }) %>
+
+<div class="admin-wrap">
+  <%- include("../partials/admin-nav", { active: "orders" }) %>
+
+  <section class="admin-main">
+    <h1>Orders</h1>
+
+    <div class="filter-pills">
+      <a href="/admin/orders" class="<%= status === '' ? 'on' : '' %>">All</a>
+      <% statuses.forEach(function (s) { %>
+        <a href="/admin/orders?status=<%= s %>" class="<%= status === s ? 'on' : '' %>"><%= s %></a>
+      <% }); %>
+    </div>
+
+    <% if (orders.length === 0) { %>
+      <p class="empty">No orders found.</p>
+    <% } else { %>
+      <table class="admin-table">
+        <tr><th>Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr>
+        <% orders.forEach(function (o) { %>
+          <tr>
+            <td>#<%= o.id %></td>
+            <td><%= o.customer %></td>
+            <td><%= o.created_at.slice(0, 10) %></td>
+            <td><span class="badge"><%= o.status %></span></td>
+            <td>Rs. <%= o.total.toLocaleString() %></td>
+            <td><a href="/admin/orders/<%= o.id %>">View</a></td>
+          </tr>
+        <% }); %>
+      </table>
+    <% } %>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

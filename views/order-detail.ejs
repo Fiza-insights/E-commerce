@@ -1,0 +1,32 @@
+﻿<%- include("partials/header", { title: "Order #" + order.id + " | Lustre & Light" }) %>
+
+<a href="/orders" class="back-link">&larr; Back to my orders</a>
+
+<div class="confirm-card detail-card">
+  <h1>Order #<%= order.id %></h1>
+  <p class="auth-sub">Placed on <%= order.created_at.slice(0, 10) %></p>
+
+  <% const flow = ["pending", "confirmed", "shipped", "delivered"]; const idx = flow.indexOf(order.status); %>
+  <% if (order.status === "cancelled") { %>
+    <p class="form-error">This order was cancelled.</p>
+  <% } else { %>
+    <div class="timeline">
+      <% flow.forEach(function (s, i) { %>
+        <div class="step <%= i <= idx ? 'done' : '' %>"><div class="dot"></div><%= s %></div>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <div class="confirm-meta">
+    <div><span>Payment</span><strong>Cash on Delivery</strong></div>
+    <div><span>Phone</span><strong><%= order.phone %></strong></div>
+    <div><span>Address</span><strong><%= order.address %></strong></div>
+  </div>
+
+  <% lines.forEach(function (l) { %>
+    <div class="sum-row"><span><%= l.name %> x <%= l.quantity %></span><span>Rs. <%= (l.price * l.quantity).toLocaleString() %></span></div>
+  <% }); %>
+  <div class="sum-row total"><span>Total</span><span>Rs. <%= order.total.toLocaleString() %></span></div>
+</div>
+
+<%- include("partials/footer") %>

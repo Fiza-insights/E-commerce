@@ -1,0 +1,27 @@
+﻿<%- include("partials/header", { title: "My Orders | Lustre & Light" }) %>
+
+<h1 class="page-title">My Orders</h1>
+
+<% if (orders.length === 0) { %>
+  <div class="empty-cart">
+    <p>You have not placed any orders yet.</p>
+    <a href="/shop" class="btn">Start Shopping</a>
+  </div>
+<% } else { %>
+  <div class="order-list">
+    <% orders.forEach(function (o) { %>
+      <a href="/order/<%= o.id %>" class="order-card">
+        <div>
+          <strong>Order #<%= o.id %></strong>
+          <small><%= o.created_at.slice(0, 10) %> &middot; <%= o.item_count %> item(s)</small>
+        </div>
+        <div class="order-right">
+          <span class="badge"><%= o.status %></span>
+          <strong>Rs. <%= o.total.toLocaleString() %></strong>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+<% } %>
+
+<%- include("partials/footer") %>

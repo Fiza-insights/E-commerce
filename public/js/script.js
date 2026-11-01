@@ -78,3 +78,63 @@
     });
   });
 })();
+
+/* ===== Hide broken images (placeholder shows instead) ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".product-img img, .detail-img img, .cart-thumb img, .thumb img").forEach(function (img) {
+    function hide() { img.style.display = "none"; }
+    img.addEventListener("error", hide);
+    if (img.complete && img.naturalWidth === 0) hide();
+  });
+});
+
+/* ===== Extra animations (underline + count-up) ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  var titles = document.querySelectorAll(".section-title");
+  var uo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add("underlined");
+        uo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  titles.forEach(function (t) { uo.observe(t); });
+
+  document.querySelectorAll(".stat-card strong").forEach(function (el) {
+    var text = el.textContent;
+    var m = text.match(/[\d,]+/);
+    if (!m) return;
+    var target = parseInt(m[0].replace(/,/g, ""), 10);
+    var withComma = m[0].indexOf(",") !== -1;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / 1200, 1);
+      var val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      el.textContent = text.replace(m[0], withComma ? val.toLocaleString() : String(val));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+});
+
+/* ===== Image gallery click ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  var main = document.getElementById("mainImg");
+  var thumbs = document.querySelectorAll(".gallery-thumb");
+  if (!main || !thumbs.length) return;
+
+  thumbs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      thumbs.forEach(function (x) { x.classList.remove("active"); });
+      t.classList.add("active");
+      main.style.opacity = "0";
+      setTimeout(function () {
+        main.style.display = "";
+        main.src = t.getAttribute("data-src");
+        main.style.opacity = "1";
+      }, 180);
+    });
+  });
+});

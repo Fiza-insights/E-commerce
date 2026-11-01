@@ -13,4 +13,7 @@ const productCols = db.prepare("PRAGMA table_info(products)").all().map(function
 if (!productCols.includes("long_description")) {
   db.exec("ALTER TABLE products ADD COLUMN long_description TEXT");
 }
+if (!productCols.includes("images")) {
+  db.exec("ALTER TABLE products ADD COLUMN images TEXT");
+}
 module.exports = db;

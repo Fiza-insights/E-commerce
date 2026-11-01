@@ -16,7 +16,7 @@
         <a href="/">Home</a>
         <a href="/shop">Shop</a>
         <a href="/cart">Cart<% if (cartCount > 0) { %> <span class="cart-badge"><%= cartCount %></span><% } %></a>
-        <% if (currentUser) { %><span class="hello">Hi, <%= currentUser.name.split(" ")[0] %></span><form method="POST" action="/logout" class="logout-form"><button type="submit">Logout</button></form><% } else { %><a href="/login">Login</a><% } %>
+        <% if (currentUser) { %><a href="/orders">My Orders</a><% if (currentUser.role === "admin") { %><a href="/admin">Admin</a><% } %><span class="hello">Hi, <%= currentUser.name.split(" ")[0] %></span><form method="POST" action="/logout" class="logout-form"><button type="submit">Logout</button></form><% } else { %><a href="/login">Login</a><% } %>
       </div>
     </nav>
   </header>

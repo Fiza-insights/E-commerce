@@ -1,0 +1,54 @@
+﻿<%- include("../partials/header", { title: "Product | Admin" }) %>
+
+<div class="admin-wrap">
+  <%- include("../partials/admin-nav", { active: "products" }) %>
+
+  <section class="admin-main">
+    <h1><%= isNew ? "Add Product" : "Edit Product" %></h1>
+
+    <% if (error) { %><p class="form-error"><%= error %></p><% } %>
+
+    <form method="POST" action="<%= isNew ? '/admin/products' : '/admin/products/' + product.id %>" class="admin-form">
+      <label>Name</label>
+      <input type="text" name="name" value="<%= product.name || '' %>" required>
+
+      <label>Category</label>
+      <select name="category_id" required>
+        <option value="">Choose category</option>
+        <% categories.forEach(function (c) { %>
+          <option value="<%= c.id %>" <%= Number(product.category_id) === c.id ? "selected" : "" %>><%= c.name %></option>
+        <% }); %>
+      </select>
+
+      <div class="two-col">
+        <div>
+          <label>Price (Rs.)</label>
+          <input type="number" name="price" min="1" value="<%= product.price || '' %>" required>
+        </div>
+        <div>
+          <label>Stock</label>
+          <input type="number" name="stock" min="0" value="<%= product.stock != null ? product.stock : 0 %>" required>
+        </div>
+      </div>
+
+      <label>Image file name</label>
+      <input type="text" name="image" value="<%= product.image || '' %>" placeholder="necklace-1.jpg">
+      <small class="hint">Put the photo in public/images/products first.</small>
+
+      <label>Short description</label>
+      <input type="text" name="description" value="<%= product.description || '' %>">
+
+      <label>Long description</label>
+      <textarea name="long_description" rows="4"><%= product.long_description || '' %></textarea>
+
+      <label class="check"><input type="checkbox" name="featured" <%= product.featured ? "checked" : "" %>> Show in Featured Collection on the home page</label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn"><%= isNew ? "Add Product" : "Save Changes" %></button>
+        <a href="/admin/products" class="clear-btn">Cancel</a>
+      </div>
+    </form>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

@@ -1,11 +1,25 @@
 ﻿<%- include("partials/header", { title: product.name + " | Lustre & Light" }) %>
 
+<% const gallery = (product.images ? product.images.split(",") : [product.image]).filter(Boolean); %>
+
 <a href="/shop" class="back-link">&larr; Back to shop</a>
 
 <section class="product-detail">
-  <div class="detail-img">
-    <img src="/images/products/<%= product.image %>" alt="<%= product.name %>">
+  <div class="gallery">
+    <div class="detail-img">
+      <img id="mainImg" src="/images/products/<%= gallery[0] %>" alt="<%= product.name %>">
+    </div>
+    <% if (gallery.length > 1) { %>
+      <div class="gallery-thumbs">
+        <% gallery.forEach(function (f, i) { %>
+          <button type="button" class="gallery-thumb <%= i === 0 ? 'active' : '' %>" data-src="/images/products/<%= f %>">
+            <img src="/images/products/<%= f %>" alt="<%= product.name %> view <%= i + 1 %>">
+          </button>
+        <% }); %>
+      </div>
+    <% } %>
   </div>
+
   <div class="detail-info">
     <p class="cat-label"><%= product.category_name %></p>
     <h1><%= product.name %></h1>

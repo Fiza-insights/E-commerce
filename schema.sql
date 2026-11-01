@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS products (
   price INTEGER NOT NULL,
   stock INTEGER NOT NULL DEFAULT 0,
   image TEXT,
+  images TEXT,
   featured INTEGER NOT NULL DEFAULT 0,
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );

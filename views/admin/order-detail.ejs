@@ -1,0 +1,44 @@
+﻿<%- include("../partials/header", { title: "Order #" + order.id + " | Admin" }) %>
+
+<div class="admin-wrap">
+  <%- include("../partials/admin-nav", { active: "orders" }) %>
+
+  <section class="admin-main">
+    <a href="/admin/orders" class="back-link">&larr; Back to orders</a>
+    <h1>Order #<%= order.id %></h1>
+
+    <% if (msg) { %><p class="notice"><%= msg %></p><% } %>
+
+    <div class="admin-form">
+      <div class="confirm-meta">
+        <div><span>Customer</span><strong><%= order.customer %> (<%= order.email %>)</strong></div>
+        <div><span>Date</span><strong><%= order.created_at.slice(0, 10) %></strong></div>
+        <div><span>Phone</span><strong><%= order.phone %></strong></div>
+        <div><span>Address</span><strong><%= order.address %></strong></div>
+        <div><span>Payment</span><strong>Cash on Delivery</strong></div>
+        <div><span>Status</span><strong class="badge"><%= order.status %></strong></div>
+      </div>
+
+      <% lines.forEach(function (l) { %>
+        <div class="sum-row"><span><%= l.name %> x <%= l.quantity %></span><span>Rs. <%= (l.price * l.quantity).toLocaleString() %></span></div>
+      <% }); %>
+      <div class="sum-row total"><span>Total</span><span>Rs. <%= order.total.toLocaleString() %></span></div>
+
+      <% if (order.status !== "cancelled") { %>
+        <form method="POST" action="/admin/orders/<%= order.id %>/status" class="status-form">
+          <label>Change status</label>
+          <select name="status">
+            <% statuses.forEach(function (s) { %>
+              <option value="<%= s %>" <%= s === order.status ? "selected" : "" %>><%= s %></option>
+            <% }); %>
+          </select>
+          <button type="submit" class="btn">Update</button>
+        </form>
+      <% } else { %>
+        <p class="form-error">This order is cancelled.</p>
+      <% } %>
+    </div>
+  </section>
+</div>
+
+<%- include("../partials/footer") %>

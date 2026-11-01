@@ -78,7 +78,7 @@ app.get("/shop", function (req, res) {
 app.get("/product/:id", function (req, res) {
   const product = db.prepare("SELECT p.*, c.name AS category_name, " + RATING_SQL + " FROM products p JOIN categories c ON c.id = p.category_id WHERE p.id = ?").get(req.params.id);
   if (!product) {
-    return res.status(404).send("Product not found");
+    return res.status(404).render("404");
   }
   const reviews = db.prepare("SELECT * FROM reviews WHERE product_id = ? ORDER BY id DESC").all(product.id);
   const related = db.prepare("SELECT p.*, " + RATING_SQL + " FROM products p WHERE p.category_id = ? AND p.id != ? LIMIT 3").all(product.category_id, product.id);
@@ -87,7 +87,17 @@ app.get("/product/:id", function (req, res) {
 
 app.use("/cart", require("./routes/cart"));
 app.use("/", require("./routes/auth"));
+app.use("/", require("./routes/orders"));
+app.use("/admin", require("./routes/admin"));
 
+// 404 aur 500 (sab routes ke baad)
+app.use(function (req, res) {
+  res.status(404).render("404");
+});
+app.use(function (err, req, res, next) {
+  console.error(err);
+  res.status(500).render("500");
+});
 app.listen(3000, function () {
   console.log("Server chal raha hai: http://localhost:3000");
 });
