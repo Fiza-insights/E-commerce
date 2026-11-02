@@ -12,7 +12,8 @@
   <header class="site-header">
     <nav class="navbar">
       <a href="/" class="logo">Lustre & Light</a>
-      <div class="nav-links">
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
+<div class="nav-links" id="navLinks">
         <a href="/">Home</a>
         <a href="/shop">Shop</a>
         <a href="/cart">Cart<% if (cartCount > 0) { %> <span class="cart-badge"><%= cartCount %></span><% } %></a>

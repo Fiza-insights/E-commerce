@@ -138,3 +138,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+/* ===== Mobile menu toggle ===== */
+document.addEventListener("DOMContentLoaded", function () {
+  var btn = document.getElementById("navToggle");
+  var links = document.getElementById("navLinks");
+  if (!btn || !links) return;
+  btn.addEventListener("click", function () {
+    var open = links.classList.toggle("open");
+    btn.innerHTML = open ? "&#10005;" : "&#9776;";
+  });
+});
+
+/* ===== ADVANCED: spotlight, parallax, magnetic buttons ===== */
+(function () {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+
+  var glow = document.createElement("div");
+  glow.className = "cursor-glow";
+  document.body.appendChild(glow);
+
+  var tx = window.innerWidth / 2, ty = window.innerHeight / 2, x = tx, y = ty;
+  document.addEventListener("mousemove", function (e) {
+    tx = e.clientX; ty = e.clientY;
+    var root = document.documentElement;
+    root.style.setProperty("--mx", ((tx / window.innerWidth) - 0.5) * -40);
+    root.style.setProperty("--my", ((ty / window.innerHeight) - 0.5) * -40);
+  });
+  (function loop() {
+    x += (tx - x) * 0.12;
+    y += (ty - y) * 0.12;
+    glow.style.transform = "translate(" + x + "px," + y + "px)";
+    requestAnimationFrame(loop);
+  })();
+
+  document.querySelectorAll("a[class*='btn'], button[class*='btn']").forEach(function (b) {
+    b.addEventListener("mousemove", function (e) {
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) * 0.25;
+      var dy = (e.clientY - (r.top + r.height / 2)) * 0.35;
+      b.style.transform = "translate(" + dx + "px," + dy + "px)";
+    });
+    b.addEventListener("mouseleave", function () { b.style.transform = ""; });
+  });
+})();

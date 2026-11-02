@@ -2,3 +2,5 @@ node_modules
 store.db
 
 raw-photos
+
+sessions.db*

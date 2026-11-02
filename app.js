@@ -2,6 +2,9 @@
 const path = require("path");
 const db = require("./db");
 const session = require("express-session");
+const Database = require("better-sqlite3");
+const SqliteStore = require("better-sqlite3-session-store")(session);
+const sessionDb = new Database(path.join(__dirname, "sessions.db"));
 
 const app = express();
 
@@ -12,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session (cart aur login ke liye)
 app.use(session({
+  store: new SqliteStore({ client: sessionDb, expired: { clear: true, intervalMs: 900000 } }),
   secret: process.env.SESSION_SECRET || "dev-only-secret-change-me",
   resave: false,
   saveUninitialized: false,

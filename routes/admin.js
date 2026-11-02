@@ -31,6 +31,12 @@ function readProduct(body) {
     price: parseInt(body.price),
     stock: parseInt(body.stock),
     image: (body.image || "").trim(),
+    images: (function () {
+      const list = (body.images || "").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      const main = (body.image || "").trim();
+      if (main && list.indexOf(main) === -1) list.unshift(main);
+      return list.join(",");
+    })(),
     description: (body.description || "").trim(),
     long_description: (body.long_description || "").trim(),
     featured: body.featured ? 1 : 0
@@ -43,6 +49,7 @@ function validateProduct(p) {
   if (!(p.price >= 1)) return "Price must be a positive number.";
   if (!(p.stock >= 0)) return "Stock must be zero or more.";
   if (p.image && !/^[\w\-.]+\.(jpg|jpeg|png|webp)$/i.test(p.image)) return "Image must be a file name like necklace-1.jpg";
+  if (p.images && !p.images.split(",").every(function (f) { return /^[\w\-.]+\.(jpg|jpeg|png|webp)$/i.test(f); })) return "Gallery images must be file names like ring-1.jpg, ring-2.jpg";
   return null;
 }
 
@@ -67,8 +74,8 @@ router.post("/products", function (req, res) {
   if (error) {
     return res.status(400).render("admin/product-form", { product: p, categories: allCategories(), error: error, isNew: true });
   }
-  db.prepare("INSERT INTO products (category_id, name, description, long_description, price, stock, image, featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-    .run(p.category_id, p.name, p.description, p.long_description, p.price, p.stock, p.image, p.featured);
+  db.prepare("INSERT INTO products (category_id, name, description, long_description, price, stock, image, images, featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+    .run(p.category_id, p.name, p.description, p.long_description, p.price, p.stock, p.image, p.images, p.featured);
   res.redirect("/admin/products?msg=" + encodeURIComponent("Product added."));
 });
 
@@ -88,8 +95,8 @@ router.post("/products/:id", function (req, res) {
   if (error) {
     return res.status(400).render("admin/product-form", { product: p, categories: allCategories(), error: error, isNew: false });
   }
-  db.prepare("UPDATE products SET category_id = ?, name = ?, description = ?, long_description = ?, price = ?, stock = ?, image = ?, featured = ? WHERE id = ?")
-    .run(p.category_id, p.name, p.description, p.long_description, p.price, p.stock, p.image, p.featured, id);
+  db.prepare("UPDATE products SET category_id = ?, name = ?, description = ?, long_description = ?, price = ?, stock = ?, image = ?, images = ?, featured = ? WHERE id = ?")
+    .run(p.category_id, p.name, p.description, p.long_description, p.price, p.stock, p.image, p.images, p.featured, id);
   res.redirect("/admin/products?msg=" + encodeURIComponent("Product updated."));
 });
 

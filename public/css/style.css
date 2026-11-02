@@ -828,3 +828,310 @@ body::before {
   .shop-intro .line { max-width: 40px; }
   .shop-intro p { font-size: 1.05rem; }
 }
+
+/* ===== Mobile menu + small screens ===== */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(244, 239, 231, 0.45);
+  color: #f4efe7;
+  width: 42px;
+  height: 38px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+}
+.nav-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+@media (max-width: 860px) {
+  .navbar { flex-wrap: wrap; }
+  .nav-toggle { display: block; }
+  .nav-links { display: none; width: 100%; flex-direction: column; padding: 8px 0 14px; }
+  .nav-links.open { display: flex; animation: slideIn 0.35s ease; }
+  .nav-links a, .nav-links .hello {
+    margin: 0;
+    padding: 12px 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.82rem;
+  }
+  .logout-form { display: block; margin: 0; padding: 12px 4px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+  .nav-links a::after { display: none; }
+}
+
+@media (max-width: 800px) {
+  .admin-table { display: block; overflow-x: auto; white-space: nowrap; }
+  main { padding: 28px 16px; }
+  .page-title { font-size: 1.8rem; }
+  .filters input, .filters select { width: 100%; }
+  .filters .btn, .filters .clear-btn { flex: 1; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+
+@media (max-width: 420px) {
+  .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .product-card h3 { font-size: 0.95rem; }
+  .hero h1 { font-size: 1.9rem; letter-spacing: 1px; }
+  .auth-card, .checkout-form, .confirm-card { padding: 24px 18px; }
+}
+
+/* ===== Focus, selection, soft borders, background glow ===== */
+* { -webkit-tap-highlight-color: transparent; }
+::selection { background: var(--gold); color: var(--accent-dark); }
+
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.site-header :focus, .site-header :focus-visible { outline: none; }
+.nav-links a:focus-visible { color: var(--gold); }
+.nav-links a, .nav-toggle, .logout-form button { -webkit-user-select: none; user-select: none; }
+.nav-links a:active, .nav-toggle:active, .logout-form button:active {
+  color: var(--gold);
+  background: rgba(201, 169, 110, 0.15);
+  transform: scale(0.97);
+}
+
+select, input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
+.filters select option { background: #fff; color: var(--text); }
+.filters select option:checked { background: var(--accent); color: #fff; }
+
+/* soft gold borders + rounded corners */
+.product-card, .cart-row, .order-card, .review-card, .auth-card, .checkout-form,
+.confirm-card, .cart-summary, .admin-form, .stat-card {
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  border-radius: 14px;
+}
+.review-card { border-left: 3px solid var(--gold); }
+.product-card { overflow: hidden; }
+.product-card:hover, .cart-row:hover, .order-card:hover { border-color: var(--gold); }
+.product-img { border-radius: 0; border-bottom: 1px solid rgba(201, 169, 110, 0.35); }
+.detail-img { border: 1px solid rgba(201, 169, 110, 0.5); border-radius: 14px; overflow: hidden; }
+.gallery-thumb { border-radius: 10px; border-color: rgba(201, 169, 110, 0.5); }
+.cart-thumb, .thumb { border-radius: 8px; border-color: rgba(201, 169, 110, 0.5); }
+
+.filters input, .filters select { border: 1px solid #d9ccae; border-radius: 10px; }
+.filters .btn, .filters .clear-btn { border-radius: 10px; }
+.auth-card input, .checkout-form input, .checkout-form textarea, .admin-form input,
+.admin-form select, .admin-form textarea { border: 1px solid #d9ccae; border-radius: 10px; }
+.btn { border-radius: 8px; }
+.badge { border-radius: 20px; padding: 3px 12px; }
+
+/* soft moving glow on the whole website background */
+body {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(201, 169, 110, 0.20), transparent 38%),
+    radial-gradient(circle at 80% 75%, rgba(15, 61, 59, 0.10), transparent 42%),
+    var(--bg);
+  background-size: 160% 160%, 160% 160%, auto;
+  background-attachment: fixed;
+  animation: bgDrift 28s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+  from { background-position: 0% 0%, 100% 100%, 0 0; }
+  to { background-position: 100% 100%, 0% 0%, 0 0; }
+}
+
+/* ===== Custom dropdown colours (no blue) ===== */
+@supports (appearance: base-select) {
+  .filters select, .admin-form select, .status-form select,
+  .filters select::picker(select), .admin-form select::picker(select), .status-form select::picker(select) {
+    appearance: base-select;
+  }
+
+  .filters select::picker(select), .admin-form select::picker(select), .status-form select::picker(select) {
+    border: 1px solid #d9ccae;
+    border-radius: 12px;
+    background: #fff;
+    padding: 6px;
+    margin-top: 4px;
+    box-shadow: 0 12px 28px rgba(15, 61, 59, 0.18);
+  }
+
+  .filters select option, .admin-form select option, .status-form select option {
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--text);
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .filters select option:hover, .admin-form select option:hover, .status-form select option:hover,
+  .filters select option:focus, .admin-form select option:focus, .status-form select option:focus {
+    background: rgba(201, 169, 110, 0.28);
+    color: var(--accent-dark);
+  }
+  .filters select option:checked, .admin-form select option:checked, .status-form select option:checked {
+    background: var(--accent);
+    color: #fff;
+  }
+  .filters select option::checkmark, .admin-form select option::checkmark, .status-form select option::checkmark {
+    display: none;
+  }
+  .filters select::picker-icon, .admin-form select::picker-icon, .status-form select::picker-icon {
+    color: var(--accent);
+  }
+}
+
+/* ===== Home: soft background glow + more animation ===== */
+html::before, html::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+html::before {
+  width: 480px; height: 480px;
+  top: -120px; left: -120px;
+  background: radial-gradient(circle, rgba(201,169,110,.45), transparent 70%);
+  animation: glowDriftA 14s ease-in-out infinite alternate;
+}
+html::after {
+  width: 560px; height: 560px;
+  bottom: -160px; right: -140px;
+  background: radial-gradient(circle, rgba(15,61,59,.28), transparent 70%);
+  animation: glowDriftB 18s ease-in-out infinite alternate;
+}
+@keyframes glowDriftA {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(160px,120px) scale(1.25); }
+}
+@keyframes glowDriftB {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(-180px,-110px) scale(1.2); }
+}
+
+/* hero: slow floating + soft shadow */
+[class*="hero"] {
+  position: relative;
+  animation: heroFloat 7s ease-in-out infinite;
+}
+@keyframes heroFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+[class*="hero"] h1, [class*="hero"] h2 {
+  text-shadow: 0 6px 24px rgba(15,61,59,.25);
+  animation: fadeUpIn 1s ease both;
+}
+[class*="hero"] p, [class*="hero"] a {
+  animation: fadeUpIn 1.2s ease .2s both;
+}
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* cards: shadow + lift + shine on hover */
+[class*="card"] {
+  box-shadow: 0 10px 30px rgba(15,61,59,.12);
+  transition: transform .4s ease, box-shadow .4s ease;
+  animation: fadeUpIn .9s ease both;
+}
+[class*="card"]:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 22px 50px rgba(15,61,59,.25), 0 0 0 1px rgba(201,169,110,.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html::before, html::after, [class*="hero"], [class*="card"] { animation: none; }
+}
+
+/* ===== Watermark: big faint gem + brand name on every page ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='700' height='700' viewBox='0 0 700 700'><g fill='none' stroke='rgb(15,61,59)' stroke-width='3' stroke-linejoin='round'><path d='M210 220 L490 220 L580 330 L350 590 L120 330 Z'/><path d='M120 330 L580 330'/><path d='M210 220 L270 330 L350 590 L430 330 L490 220'/><path d='M270 330 L350 220 L430 330'/></g><text x='350' y='655' text-anchor='middle' font-family='Georgia, serif' font-size='44' letter-spacing='8' fill='rgb(15,61,59)'>LUSTRE %26 LIGHT</text></svg>");
+  background-repeat: no-repeat;
+  background-position: center 55%;
+  background-size: min(620px, 80vw);
+  opacity: .07;
+  animation: watermarkBreath 9s ease-in-out infinite alternate;
+}
+@keyframes watermarkBreath {
+  from { opacity: .05; transform: scale(1); }
+  to   { opacity: .10; transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+
+/* ===== ADVANCED: shimmer heading, glowing rotating border, button shine, spotlight ===== */
+@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+/* gold shimmer on hero heading */
+[class*="hero"] h1, [class*="hero"] h2 {
+  background: linear-gradient(100deg, #0f3d3b 20%, #c9a96e 40%, #fff3d6 50%, #c9a96e 60%, #0f3d3b 80%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 6px 18px rgba(15,61,59,.25));
+  animation: fadeUpIn 1s ease both, shimmerMove 5s linear 1s infinite;
+}
+@keyframes shimmerMove {
+  from { background-position: 150% 0; }
+  to   { background-position: -100% 0; }
+}
+
+/* rotating golden border light on cards (on hover) */
+[class*="card"] { position: relative; }
+[class*="card"]::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--angle), transparent 0deg, #c9a96e 60deg, #fff3d6 90deg, transparent 150deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+[class*="card"]:hover::after {
+  opacity: 1;
+  animation: spinAngle 2.5s linear infinite;
+}
+@keyframes spinAngle { to { --angle: 360deg; } }
+
+/* shine sweep on buttons */
+a[class*="btn"], button[class*="btn"] {
+  position: relative;
+  overflow: hidden;
+}
+a[class*="btn"]::before, button[class*="btn"]::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg);
+  transition: left .7s ease;
+  pointer-events: none;
+}
+a[class*="btn"]:hover::before, button[class*="btn"]:hover::before { left: 130%; }
+
+/* mouse-following spotlight */
+.cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 420px; height: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,169,110,.28), transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity .4s ease;
+  will-change: transform;
+}
+@media (pointer: coarse) { .cursor-glow { display: none; } }
+
+/* watermark moves slightly with the mouse (parallax) */
+body::before {
+  background-position: calc(50% + var(--mx, 0) * 1px) calc(55% + var(--my, 0) * 1px);
+}

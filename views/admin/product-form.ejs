@@ -35,6 +35,10 @@
       <input type="text" name="image" value="<%= product.image || '' %>" placeholder="necklace-1.jpg">
       <small class="hint">Put the photo in public/images/products first.</small>
 
+      <label>Gallery images (comma separated)</label>
+      <input type="text" name="images" value="<%= product.images || '' %>" placeholder="ring-1.jpg, ring-2.jpg, ring-3.jpg">
+      <small class="hint">The main image is added to the gallery automatically.</small>
+
       <label>Short description</label>
       <input type="text" name="description" value="<%= product.description || '' %>">
 
