@@ -1,4 +1,4 @@
-﻿const db = require("./db");
+const db = require("./db");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path = require("path");
@@ -68,7 +68,7 @@ catalog.forEach(function (c) {
   c.items.forEach(function (name, i) {
     const price = c.base + ((i * 7) % 9) * 300;
     const stock = idx % 17 === 16 ? 0 : 4 + ((idx * 7) % 27);
-    const files = [0, 1, 2].map(function (k) { return c.prefix + "-" + (((i + k) % 4) + 1) + ".jpg"; });
+    const files = [0, 1, 2].map(function (k) { return c.prefix + "-" + (((i + k) % photoCount(c.prefix)) + 1) + ".jpg"; });
     addProduct.run(catId, name, c.text + " " + notes[i % notes.length], c.long, price, stock, files[0], files.join(","), i === 0 ? 1 : 0);
     idx++;
   });
@@ -164,3 +164,27 @@ console.log("Products:  ", n("SELECT COUNT(*) AS n FROM products"));
 console.log("Reviews:   ", n("SELECT COUNT(*) AS n FROM reviews"));
 console.log("Users:     ", n("SELECT COUNT(*) AS n FROM users"));
 console.log("Orders:    ", n("SELECT COUNT(*) AS n FROM orders"));
+
+function photoCount(prefix) {
+  const fs = require("fs"), path = require("path");
+  const re = new RegExp("^" + prefix + "-\\d+\\.jpg$");
+  return fs.readdirSync(path.join(__dirname, "public", "images", "products")).filter(function (f) { return re.test(f); }).length;
+}
+
+function photoCount(prefix) {
+  const fs = require("fs"), path = require("path");
+  const re = new RegExp("^" + prefix + "-\\d+\\.jpg$");
+  return fs.readdirSync(path.join(__dirname, "public", "images", "products")).filter(function (f) { return re.test(f); }).length;
+}
+
+function photoCount(prefix) {
+  const fs = require("fs"), path = require("path");
+  const re = new RegExp("^" + prefix + "-\\d+\\.jpg$");
+  return fs.readdirSync(path.join(__dirname, "public", "images", "products")).filter(function (f) { return re.test(f); }).length;
+}
+
+function photoCount(prefix) {
+  const fs = require("fs"), path = require("path");
+  const re = new RegExp("^" + prefix + "-\\d+\\.jpg$");
+  return fs.readdirSync(path.join(__dirname, "public", "images", "products")).filter(function (f) { return re.test(f); }).length;
+}
