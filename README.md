@@ -32,7 +32,7 @@ Built as **Project 2** of the Codneura Full Stack Developer internship.
 
 ## How to run
 
-Requires Node.js 18 or newer.
+Requires Node.js 22 or newer (needed by better-sqlite3).
 
     git clone <this-repository-url>
     cd E-commerce
@@ -42,7 +42,7 @@ Requires Node.js 18 or newer.
 
 Then open http://localhost:3000
 
-`node seed.js` creates all tables and fills the database with 5 categories, 52 products, reviews, 8 sample customers, 1 admin and 20 sample orders. It also writes `data/products.csv`. Running it again resets the demo data.
+`node seed.js` creates all tables and fills the database with 5 categories, 52 products, reviews, 8 sample customers, 1 admin and 19 sample orders. It also writes `data/products.csv`. Running it again resets the demo data.
 
 The SQL schema is in `schema.sql`.
 
@@ -98,3 +98,4 @@ All product photos are free-to-use images from Unsplash. See [CREDITS.md](CREDIT
 ## Author
 Fiza Saleem - Codneura Full Stack Developer Intern
 GitHub: [Fiza-insights](https://github.com/Fiza-insights)
+
